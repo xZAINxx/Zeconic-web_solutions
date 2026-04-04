@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fluid Aurora Background</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#050508; width:100%; height:100vh;
+      overflow:hidden; display:flex; align-items:center; justify-content:center;
+      font-family:'Inter', sans-serif;
+    }
+    #canvas-container { position:absolute; inset:0; z-index:1; }
+    canvas { display:block; }
+    
+    .overlay {
+      position:relative; z-index:10; pointer-events:none;
+      text-align:center;
+    }
+    .eyebrow { font-size:10px; letter-spacing:6px; color:rgba(255,255,255,0.4); text-transform:uppercase; margin-bottom:16px; }
+    h1 { font-size:clamp(3rem, 8vw, 6rem); font-weight:900; letter-spacing:-2px; color:#fff; line-height:1; margin-bottom:20px; }
+    p { font-size:15px; color:rgba(255,255,255,0.6); max-width:400px; margin:0 auto; line-height:1.6; }
+    
+    .cursor-hint {
+      position:absolute; bottom:24px; left:50%; transform:translateX(-50%);
+      font-size:9px; letter-spacing:3px; color:rgba(255,255,255,0.2); text-transform:uppercase; z-index:10; pointer-events:none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div class="overlay">
+  <div class="eyebrow">Interactive GLSL</div>
+  <h1>Aurora</h1>
+  <p>A procedural fluid nebula driven by gradient noise and fragment shaders.</p>
+</div>
+<div class="cursor-hint">move cursor to swirl</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+const container = document.getElementById('canvas-container');
+const W = container.clientWidth || window.innerWidth;
+const H = container.clientHeight || window.innerHeight;
+
+const renderer = new THREE.WebGLRenderer({ antialias: false });
+// Crucial for integrated GPUs (Intel HD etc): Cap DPR to 0.75 for this heavy fragment shader
+// The CSS scales it back up, acting as a free performance multiplier.
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 0.75));
+renderer.setSize(W, H);
+container.appendChild(renderer.domElement);
+
+const scene  = new THREE.Scene();
+const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 10);
+camera.position.z = 1;
+
+// ── FLUID NOISE SHADER ───────────────────────────
+const fragmentShader = `
+// Force high precision for older Intel HD drivers to prevent noise artifacts
+precision highp float;
+
+uniform float uTime;
+uniform vec2 uResolution;
+uniform vec2 uMouse;
+varying vec2 vUv;
+
+// 2D Random (Bulletproof version with lowered constants to prevent float overflow on mobile/integrated GPUs)
+vec2 random2(vec2 st){
+    st = vec2( dot(st, vec2(127.1, 311.7)), dot(st, vec2(269.5, 183.3)) );
+    return -1.0 + 2.0 * fract(sin(st) * 4375.854); 
+}
+
+// 2D Noise
+float noise(vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+
+    return mix( mix( dot( random2(i + vec2(0.0, 0.0)), f - vec2(0.0, 0.0) ),
+                     dot( random2(i + vec2(1.0, 0.0)), f - vec2(1.0, 0.0) ), u.x),
+                mix( dot( random2(i + vec2(0.0, 1.0)), f - vec2(0.0, 1.0) ),
+                     dot( random2(i + vec2(1.0, 1.0)), f - vec2(1.0, 1.0) ), u.x), u.y);
+}
+
+// FBM
+float fbm(vec2 st) {
+    float value = 0.0;
+    float amplitude = 0.5;
+    vec2 shift = vec2(100.0, 100.0);
+    // Pre-calculated rotation matrix
+    mat2 rot = mat2(0.87758, 0.47942, -0.47942, 0.87758); 
+    for (int i = 0; i < 3; ++i) {
+        value += amplitude * noise(st);
+        st = rot * st * 2.0 + shift;
+        amplitude *= 0.5;
+    }
+    return value;
+}
+
+void main() {
+    vec2 st = vUv;
+    float aspect = uResolution.x / uResolution.y;
+    st.x *= aspect;
+
+    vec2 mouse = uMouse;
+    mouse.x *= aspect;
+    
+    vec2 delta = st - mouse;
+    float dist = length(delta);
+    
+    // Swirl distortion based on mouse
+    float swirl = exp(-dist * 3.0);
+    // Avoid normalize(0,0) NaN bug by adding an epsilon
+    vec2 dir = normalize(delta + vec2(0.0001));
+    st += dir * swirl * 0.1 * sin(uTime * 2.0);
+
+    // Primary motion fields
+    vec2 q = vec2(0.0);
+    q.x = fbm(st + 0.02 * uTime);
+    q.y = fbm(st + vec2(1.0));
+
+    vec2 r = vec2(0.0);
+    r.x = fbm(st + 1.0 * q + vec2(1.7, 9.2) + 0.15 * uTime);
+    r.y = fbm(st + 1.0 * q + vec2(8.3, 2.8) + 0.126 * uTime);
+
+    // FBM output is roughly -1 to 1. Map everything strictly to 0..1 to prevent negative math blackouts!
+    float f = fbm(st + r) * 0.5 + 0.5;
+    float lenQ = length(q);
+    float lenR = length(r);
+
+    // Deep, subtle Aurora Colors (optimized for text readability)
+    vec3 colorBase = vec3(0.02, 0.04, 0.1);  // Very dark obsidian/blue base
+    vec3 colorTeal = vec3(0.0, 0.4, 0.5);    // More vibrant teal
+    vec3 colorBlue = vec3(0.0, 0.15, 0.7);   // Richer blue
+    
+    vec3 finalColor = mix(colorBase, colorTeal, clamp(f * 1.5, 0.0, 1.0)); // Boost contrast weight
+    finalColor = mix(finalColor, colorBlue, clamp(lenQ * 1.1, 0.0, 1.0));
+    finalColor = mix(finalColor, vec3(0.2, 0.0, 0.4), clamp(lenR * 0.8, 0.0, 1.0)); // Slightly stronger purple glow
+
+    // Gentle global dimming so the white HTML text completely pops out - but with a bit more punch
+    finalColor *= (f + 0.3) * 1.0;
+
+    // Vignette mapped manually to center of UV
+    float distToCenter = length(vUv - vec2(0.5, 0.5));
+    float vignette = 1.0 - smoothstep(0.3, 1.0, distToCenter);
+    
+    gl_FragColor = vec4(finalColor * vignette, 1.0);
+}
+`;
+
+const uniforms = {
+  uTime: { value: 0 },
+  uResolution: { value: new THREE.Vector2(W, H) },
+  uMouse: { value: new THREE.Vector2(0.5, 0.5) }
+};
+
+const material = new THREE.ShaderMaterial({
+  vertexShader: `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader,
+  uniforms
+});
+
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+scene.add(plane);
+
+// ── MOUSE TRACKING ───────────────────────────────
+let targetMx = 0.5, targetMy = 0.5;
+let curMx = 0.5, curMy = 0.5;
+
+renderer.domElement.addEventListener('mousemove', (e) => {
+  targetMx = e.clientX / window.innerWidth;
+  // GLSL Y is bottom-to-top
+  targetMy = 1.0 - (e.clientY / window.innerHeight);
+});
+
+renderer.domElement.addEventListener('mouseleave', () => {
+  targetMx = 0.5; targetMy = 0.5;
+});
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  
+  curMx = lerp(curMx, targetMx, 0.05);
+  curMy = lerp(curMy, targetMy, 0.05);
+  
+  uniforms.uTime.value = clock.getElapsedTime();
+  uniforms.uMouse.value.set(curMx, curMy);
+  
+  renderer.render(scene, camera);
+}
+
+animate();
+
+window.addEventListener('resize', () => {
+  const W2 = window.innerWidth, H2 = window.innerHeight;
+  renderer.setSize(W2, H2);
+  uniforms.uResolution.value.set(W2, H2);
+});
+</script>
+</body>
+</html>
