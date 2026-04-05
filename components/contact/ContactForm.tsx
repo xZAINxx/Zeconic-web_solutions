@@ -202,10 +202,21 @@ export default function ContactForm() {
                   Email
                 </p>
                 <a
-                  href="mailto:hello@zeconic.com"
+                  href="mailto:info@zeconic.com"
                   className="font-body text-sm text-primary hover:underline underline-offset-4"
                 >
-                  hello@zeconic.com
+                  info@zeconic.com
+                </a>
+              </div>
+              <div>
+                <p className="font-body text-xs text-textTertiary uppercase tracking-wider mb-1">
+                  Phone
+                </p>
+                <a
+                  href="tel:+19253342667"
+                  className="font-body text-sm text-primary hover:underline underline-offset-4"
+                >
+                  +1 (925) 334-2667
                 </a>
               </div>
               <div>

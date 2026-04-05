@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { CopyrightYear } from "@/components/layout/CopyrightYear";
 
 const navLinks = [
   { href: "/services", label: "Services" },
@@ -15,10 +17,16 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-14 md:px-12">
         <div className="grid gap-10 md:grid-cols-3 md:gap-8">
           <div>
-            <p className="font-display text-lg font-semibold text-textPrimary">
-              Zeconic
-            </p>
-            <p className="mt-1 text-sm text-textSecondary">Web Solutions</p>
+            <Link href="/" className="inline-block max-w-[min(100%,280px)]">
+              <Image
+                src="/zeconic-logo.png"
+                alt="Zeconic Web Solutions"
+                width={980}
+                height={205}
+                sizes="(max-width: 768px) 60vw, 280px"
+                className="h-10 w-auto max-w-full object-contain object-left md:h-12"
+              />
+            </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-textSecondary">
               Custom websites and AI tools for small businesses across the US.
             </p>
@@ -44,19 +52,25 @@ export function Footer() {
             <p className="font-display text-sm font-semibold uppercase tracking-wider text-textTertiary">
               Contact
             </p>
-            <p className="mt-4 text-sm text-textSecondary">
+            <div className="mt-4 flex flex-col gap-3 text-sm text-textSecondary">
               <a
-                href="mailto:hello@zeconic.com"
+                href="mailto:info@zeconic.com"
                 className="transition-colors hover:text-primary"
               >
-                hello@zeconic.com
+                info@zeconic.com
               </a>
-            </p>
+              <a
+                href="tel:+19253342667"
+                className="font-body text-sm text-textSecondary transition-colors hover:text-primary"
+              >
+                +1 (925) 334-2667
+              </a>
+            </div>
           </div>
         </div>
         <div className="mt-12 border-t border-border pt-8">
           <p className="text-center text-xs text-textTertiary">
-            © 2025 Zeconic LLC. All rights reserved.
+            © <CopyrightYear /> Zeconic LLC. All rights reserved.
           </p>
         </div>
       </div>
