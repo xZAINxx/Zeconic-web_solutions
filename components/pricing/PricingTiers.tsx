@@ -9,7 +9,7 @@ const tiers = [
     name: "Starter",
     tagline: "Get online fast",
     description:
-      "Perfect for businesses that need a clean, professional web presence without the complexity.",
+      "Clean, professional web presence without the complexity. Built fast, ships in days.",
     includes: [
       "Single-page or landing page",
       "Mobile-first responsive design",
@@ -18,46 +18,49 @@ const tiers = [
       "Vercel deployment",
       "2 revision rounds",
     ],
-    cta: "Get a quote",
+    cta: "Request a quote",
     featured: false,
     accentColor: "#00E5FF",
+    accentClass: "primary",
   },
   {
     name: "Growth",
     tagline: "Most popular",
     description:
-      "A full multi-page website built to convert visitors into customers, with everything you need to compete online.",
+      "A full multi-page website built to convert visitors into customers. Everything you need to compete online.",
     includes: [
-      "Multi-page website (up to 6 pages)",
+      "Multi-page site (up to 6 pages)",
       "Custom design system",
       "SEO optimization",
-      "Performance optimization",
+      "Performance tuning",
       "Analytics integration",
       "CMS integration (optional)",
       "3 revision rounds",
       "30 days post-launch support",
     ],
-    cta: "Get a quote",
+    cta: "Request a quote",
     featured: true,
-    accentColor: "#00E5FF",
+    accentColor: "#7B61FF",
+    accentClass: "accent",
   },
   {
     name: "Pro",
     tagline: "Full-stack & AI",
     description:
-      "For businesses that want the full package — custom web app or site plus an AI chatbot to automate customer interactions.",
+      "The full package — custom site or app plus a custom-trained AI chatbot to automate customer interactions.",
     includes: [
       "Everything in Growth",
       "AI chatbot integration",
       "Custom-trained on your business",
-      "Lead capture & appointment flows",
+      "Lead capture & booking flows",
       "Full-stack features (auth, DB)",
       "Monthly retainer available",
       "Priority support",
     ],
-    cta: "Get a quote",
+    cta: "Request a quote",
     featured: false,
-    accentColor: "#7B61FF",
+    accentColor: "#FF4FD8",
+    accentClass: "magenta",
   },
 ] as const;
 
@@ -66,58 +69,89 @@ type Tier = (typeof tiers)[number];
 function TierCard({ tier, index }: { tier: Tier; index: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 26 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.12 }}
+      transition={{ duration: 0.55, delay: index * 0.1 }}
       viewport={{ once: true }}
-      className={`relative rounded-2xl border flex flex-col ${
+      className={`relative flex flex-col rounded-2xl border backdrop-blur-sm ${
         tier.featured
-          ? "border-primary/60 bg-surface scale-[1.02] shadow-[0_0_40px_rgba(0,229,255,0.08)]"
-          : "border-border/40 bg-surface/60"
+          ? "scale-[1.02] border-white/[0.10] bg-surface/80"
+          : "border-white/[0.06] bg-surface/50"
       }`}
     >
       {tier.featured && (
-        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-          <span className="bg-primary text-background text-[10px] font-body font-bold px-3 py-1 rounded-full tracking-wider uppercase">
-            Most popular
-          </span>
-        </div>
+        <>
+          {/* Aurora glow ring */}
+          <div
+            className="pointer-events-none absolute -inset-px -z-10 rounded-2xl opacity-100 blur-2xl"
+            style={{
+              background:
+                "linear-gradient(120deg, rgba(0,229,255,0.40), rgba(123,97,255,0.40), rgba(255,79,216,0.30))",
+            }}
+            aria-hidden
+          />
+          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+            <span
+              className="rounded-full px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-textPrimary"
+              style={{
+                background:
+                  "linear-gradient(120deg, #00E5FF, #7B61FF 45%, #FF4FD8)",
+              }}
+            >
+              Most popular
+            </span>
+          </div>
+        </>
       )}
 
       <div
-        className="absolute top-0 inset-x-0 h-px rounded-t-2xl"
+        className="absolute inset-x-0 top-0 h-px rounded-t-2xl"
         style={{
-          background: `linear-gradient(90deg, transparent, ${tier.accentColor}80, transparent)`,
+          background: `linear-gradient(90deg, transparent, ${tier.accentColor}, transparent)`,
         }}
       />
 
-      <div className="p-8 flex flex-col gap-6 flex-1">
+      <div className="flex flex-1 flex-col gap-6 p-8">
         <div>
-          <div className="flex items-center justify-between mb-1 gap-2 flex-wrap">
-            <h3 className="font-display text-2xl font-bold text-textPrimary">{tier.name}</h3>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h3 className="font-display text-2xl font-bold text-textPrimary">
+              {tier.name}
+            </h3>
             <span
-              className="text-xs font-body px-2 py-1 rounded-full"
+              className="rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em]"
               style={{
                 color: tier.accentColor,
                 background: `${tier.accentColor}15`,
-                border: `1px solid ${tier.accentColor}30`,
+                border: `1px solid ${tier.accentColor}40`,
               }}
             >
               {tier.tagline}
             </span>
           </div>
-          <p className="font-body text-sm text-textSecondary mt-3 leading-relaxed">{tier.description}</p>
+          <p className="mt-3 text-[14px] leading-relaxed text-textSecondary">
+            {tier.description}
+          </p>
         </div>
 
-        <div className="py-4 border-y border-border/30">
-          <p className="font-display text-3xl font-bold text-textPrimary">Custom quote</p>
-          <p className="font-body text-xs text-textTertiary mt-1">Priced based on your project scope</p>
+        <div className="border-y border-white/[0.06] py-4">
+          <p className="font-display text-[2rem] font-bold leading-none text-textPrimary">
+            Custom quote
+          </p>
+          <p className="mt-1.5 font-mono text-[10.5px] uppercase tracking-[0.18em] text-textTertiary">
+            Priced to your scope
+          </p>
         </div>
 
-        <ul className="flex flex-col gap-2.5 flex-1">
+        <ul className="flex flex-1 flex-col gap-2.5">
           {tier.includes.map((item) => (
-            <li key={item} className="flex items-start gap-2.5 text-sm font-body text-textSecondary">
-              <span style={{ color: tier.accentColor }} className="mt-0.5 text-base leading-none shrink-0">
+            <li
+              key={item}
+              className="flex items-start gap-2.5 text-[13.5px] leading-relaxed text-textSecondary"
+            >
+              <span
+                style={{ color: tier.accentColor }}
+                className="mt-0.5 shrink-0 text-base leading-none"
+              >
                 ✓
               </span>
               {item}
@@ -126,10 +160,10 @@ function TierCard({ tier, index }: { tier: Tier; index: number }) {
         </ul>
 
         <Button
-          variant={tier.featured ? "primary" : "secondary"}
+          variant={tier.featured ? "aurora" : "secondary"}
           href="/contact"
           size="md"
-          className="w-full justify-center mt-auto"
+          className="mt-auto w-full justify-center"
         >
           {tier.cta} →
         </Button>
@@ -140,26 +174,29 @@ function TierCard({ tier, index }: { tier: Tier; index: number }) {
 
 export default function PricingTiers() {
   return (
-    <section className="bg-background py-20">
+    <section className="relative">
       <SectionWrapper>
-        <div className="text-center mb-12">
-          <span className="text-xs font-body tracking-[0.25em] text-primary uppercase">Choose your plan</span>
-          <h2 className="font-display text-4xl font-bold text-textPrimary mt-3">
-            What&apos;s right for your business?
+        <div className="mb-14 text-center">
+          <span className="eyebrow text-textTertiary">
+            <span className="text-accent">●</span>&nbsp; Choose your plan
+          </span>
+          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3rem)] font-bold leading-[1.05] tracking-tight text-textPrimary">
+            What&apos;s right{" "}
+            <span className="aurora-text">for your business?</span>
           </h2>
-          <p className="font-body text-textSecondary mt-3 max-w-lg mx-auto">
-            All projects start with a free discovery call. We&apos;ll recommend the right fit after understanding
-            your goals.
+          <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-textSecondary">
+            Every project starts with a free discovery call. We&apos;ll
+            recommend the right fit after understanding your goals.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start py-6">
+        <div className="grid grid-cols-1 items-start gap-6 py-6 md:grid-cols-3">
           {tiers.map((tier, i) => (
             <TierCard key={tier.name} tier={tier} index={i} />
           ))}
         </div>
 
-        <p className="text-center font-body text-xs text-textTertiary mt-8">
-          Monthly retainers available for ongoing support, hosting, and updates. Ask us about pricing.
+        <p className="mt-10 text-center font-mono text-[11px] uppercase tracking-[0.16em] text-textTertiary">
+          Monthly retainers available · Hosting · Updates · Chatbot tuning
         </p>
       </SectionWrapper>
     </section>
