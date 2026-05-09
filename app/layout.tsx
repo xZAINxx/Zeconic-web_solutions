@@ -46,7 +46,7 @@ export default function RootLayout({
         className={`${syne.variable} ${inter.variable} ${jetbrainsMono.variable} min-h-screen bg-background font-body text-textPrimary antialiased`}
       >
         <Navbar />
-        <main className="min-h-screen pt-16 md:pt-[4.25rem]">
+        <main className="min-h-screen pt-24 md:pt-32">
           <ScrollToTop />
           <PageTransition>{children}</PageTransition>
         </main>

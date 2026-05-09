@@ -219,7 +219,7 @@ export function Navbar() {
       className="pointer-events-none fixed inset-x-0 top-0 z-50"
       initial={false}
     >
-      <div className="relative mx-auto flex h-[5.5rem] max-w-7xl items-center justify-between gap-3 px-6 md:grid md:h-24 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-4 md:px-12">
+      <div className="relative mx-auto flex h-24 max-w-7xl items-center justify-between gap-3 px-6 md:grid md:h-32 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-4 md:px-12">
         <div className="min-w-0 pr-2 md:pr-4">
           <motion.div
             className={[
@@ -237,8 +237,8 @@ export function Navbar() {
                 width={980}
                 height={205}
                 priority
-                sizes="(max-width: 768px) 78vw, min(520px, 34vw)"
-                className="h-16 w-auto max-w-full object-contain object-left transition-opacity duration-300 group-hover:opacity-90 md:h-20"
+                sizes="(max-width: 768px) 92vw, min(640px, 42vw)"
+                className="h-20 w-auto max-w-full object-contain object-left transition-opacity duration-300 group-hover:opacity-90 md:h-28"
               />
             </Link>
           </motion.div>
