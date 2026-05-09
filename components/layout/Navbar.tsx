@@ -65,7 +65,7 @@ function NavItem({ href, label, isActive }: NavItemProps) {
   const spotlightBg = useTransform(
     [spotlightX, spotlightY],
     ([x, y]) =>
-      `radial-gradient(120px circle at ${x}px ${y}px, rgba(0,229,255,0.22), transparent 70%)`
+      `radial-gradient(140px circle at ${x}px ${y}px, rgba(0,229,255,0.20), rgba(123,97,255,0.16) 40%, transparent 75%)`
   );
 
   const spotlightOpacitySpring = useSpring(spotlightOpacity, {
@@ -95,7 +95,7 @@ function NavItem({ href, label, isActive }: NavItemProps) {
       {isActive && (
         <motion.div
           layoutId="activeTab"
-          className="absolute inset-0 rounded-xl border border-primary/30 bg-primary/[0.12]"
+          className="absolute inset-0 rounded-xl border border-primary/40 bg-gradient-to-br from-primary/[0.14] via-accent/[0.10] to-magenta/[0.08]"
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
         />
       )}
@@ -154,12 +154,12 @@ function MagneticDock({ pathname }: { pathname: string | null }) {
         onMouseLeave={handleMouseLeave}
         className="relative flex items-center gap-1 rounded-2xl px-3 py-2.5"
         style={{
-          background: "rgba(255, 255, 255, 0.06)",
-          backdropFilter: "blur(20px) saturate(180%)",
-          WebkitBackdropFilter: "blur(20px) saturate(180%)",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
+          background: "rgba(11, 13, 20, 0.55)",
+          backdropFilter: "blur(22px) saturate(170%)",
+          WebkitBackdropFilter: "blur(22px) saturate(170%)",
+          border: "1px solid rgba(255, 255, 255, 0.08)",
           boxShadow:
-            "0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.1)",
+            "0 12px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255,255,255,0.06)",
           rotateX,
           rotateY,
           translateZ,
@@ -173,8 +173,8 @@ function MagneticDock({ pathname }: { pathname: string | null }) {
           className="pointer-events-none absolute -inset-4 -z-10 rounded-3xl"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(0,229,255,0.12) 0%, transparent 70%)",
-            filter: "blur(20px)",
+              "radial-gradient(ellipse at center, rgba(0,229,255,0.16) 0%, rgba(123,97,255,0.10) 40%, transparent 70%)",
+            filter: "blur(24px)",
           }}
         />
         {links.map(({ href, label }) => (
@@ -192,8 +192,8 @@ function MagneticDock({ pathname }: { pathname: string | null }) {
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
         >
           <Button
-            variant="primary"
-            className="!px-5 !py-2.5 !text-sm shadow-[0_4px_15px_rgba(0,229,255,0.25)]"
+            variant="aurora"
+            className="!px-5 !py-2.5 !text-sm"
             href="/contact"
           >
             Book a call

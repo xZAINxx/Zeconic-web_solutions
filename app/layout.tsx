@@ -3,7 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import PageTransition from "@/components/ui/PageTransition";
 import ScrollToTop from "@/components/ui/ScrollToTop";
-import { dmSans, syne } from "@/lib/fonts";
+import { inter, jetbrainsMono, syne } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -43,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${syne.variable} ${dmSans.variable} min-h-screen bg-background font-body text-textPrimary antialiased`}
+        className={`${syne.variable} ${inter.variable} ${jetbrainsMono.variable} min-h-screen bg-background font-body text-textPrimary antialiased`}
       >
         <Navbar />
         <main className="min-h-screen pt-16 md:pt-[4.25rem]">

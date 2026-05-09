@@ -9,10 +9,10 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <TrustStrip />
       <ServicesPreview />
       <PortfolioTeaser />
       <Process />
-      <TrustStrip />
       <CTABanner />
     </>
   );

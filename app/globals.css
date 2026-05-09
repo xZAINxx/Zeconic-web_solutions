@@ -5,7 +5,9 @@
 :root {
   --primary: #00e5ff;
   --accent: #7b61ff;
-  --bg: #080808;
+  --magenta: #ff4fd8;
+  --bg: #05060a;
+  --bg-deep: #02030a;
 }
 
 * {
@@ -18,14 +20,15 @@
   }
 
   body {
-    background: #080808;
-    color: #f0f0f0;
-    font-family: var(--font-dm-sans), "DM Sans", sans-serif;
+    background: var(--bg);
+    color: #f5f7fa;
+    font-family: var(--font-inter), "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
   }
 
   ::selection {
-    background: #00e5ff22;
+    background: rgba(0, 229, 255, 0.22);
     color: #00e5ff;
   }
 }
@@ -33,5 +36,67 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Subtle film grain overlay — used on aurora ambient layers */
+  .film-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Hairline gradient divider line */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 229, 255, 0.45),
+      rgba(123, 97, 255, 0.45),
+      rgba(255, 79, 216, 0.35),
+      transparent
+    );
+  }
+
+  /* Aurora text — gradient title treatment */
+  .aurora-text {
+    background: linear-gradient(
+      120deg,
+      #f5f7fa 0%,
+      #00e5ff 40%,
+      #7b61ff 70%,
+      #ff4fd8 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Glass surface */
+  .glass {
+    background: rgba(11, 13, 20, 0.55);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  /* Eyebrow chip */
+  .eyebrow {
+    font-family: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  /* Mask prism for beams */
+  .prism-mask {
+    -webkit-mask-image: url("data:image/svg+xml;utf8,%3Csvg width='100%25' height='100%25' viewBox='0 0 1000 1000' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M-100,-100 L300,1200 L450,-100 Z M400,-200 L750,1300 L650,-200 Z M800,-100 L1100,1100 L1200,-100 Z M150,500 L850,200 L1000,800 Z' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-size: cover;
+    mask-image: url("data:image/svg+xml;utf8,%3Csvg width='100%25' height='100%25' viewBox='0 0 1000 1000' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M-100,-100 L300,1200 L450,-100 Z M400,-200 L750,1300 L650,-200 Z M800,-100 L1100,1100 L1200,-100 Z M150,500 L850,200 L1000,800 Z' fill='black'/%3E%3C/svg%3E");
+    mask-size: cover;
   }
 }

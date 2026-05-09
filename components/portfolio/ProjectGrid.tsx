@@ -4,17 +4,17 @@ import ProjectCard from "./ProjectCard";
 
 export default function ProjectGrid() {
   return (
-    <section className="bg-background py-20">
-      <SectionWrapper as="div" className="!py-0">
-        <div className="mb-12">
-          <span className="text-xs font-body tracking-[0.25em] text-primary uppercase">
-            All projects
+    <section className="relative border-t border-white/[0.05]">
+      <SectionWrapper>
+        <div className="mb-12 flex flex-col gap-3">
+          <span className="eyebrow text-textTertiary">
+            <span className="text-accent">●</span>&nbsp; All projects
           </span>
-          <h2 className="font-display text-3xl font-bold text-textPrimary mt-2">
-            More work
+          <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-bold leading-[1.1] tracking-tight text-textPrimary">
+            More <span className="aurora-text">work.</span>
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {projects.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} />
           ))}
