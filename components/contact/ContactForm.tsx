@@ -89,12 +89,43 @@ export default function ContactForm() {
   const [status, setStatus] = useState<
     "idle" | "sending" | "sent" | "error"
   >("idle");
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("sending");
-    await new Promise((r) => setTimeout(r, 1500));
-    setStatus("sent");
+    setErrorMsg("");
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      name: String(data.get("name") ?? ""),
+      email: String(data.get("email") ?? ""),
+      projectType: String(data.get("projectType") ?? ""),
+      message: String(data.get("message") ?? ""),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || !json.ok) {
+        setErrorMsg(
+          json.error || "Something went wrong sending your message.",
+        );
+        setStatus("error");
+        return;
+      }
+      setStatus("sent");
+      form.reset();
+    } catch (err) {
+      console.error("Contact submit failed:", err);
+      setErrorMsg("Network error. Check your connection and try again.");
+      setStatus("error");
+    }
   };
 
   return (
@@ -188,6 +219,14 @@ export default function ContactForm() {
                       className={`${inputClass} min-h-[140px] resize-y`}
                     />
                   </div>
+                  {status === "error" && errorMsg ? (
+                    <div
+                      role="alert"
+                      className="rounded-xl border border-magenta/40 bg-magenta/[0.06] px-4 py-3 text-[13.5px] text-magenta backdrop-blur-sm"
+                    >
+                      {errorMsg}
+                    </div>
+                  ) : null}
                   <Button
                     variant="aurora"
                     size="lg"
