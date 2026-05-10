@@ -99,10 +99,10 @@ export function Footer() {
                 info@zeconic.com
               </a>
               <a
-                href="tel:+19253342667"
+                href="tel:+13475258073"
                 className="transition-colors hover:text-primary"
               >
-                +1 (925) 334-2667
+                +1 (347) 525-8073
               </a>
               <p className="text-textTertiary">United States</p>
             </div>

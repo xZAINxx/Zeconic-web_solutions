@@ -4,8 +4,6 @@ import {
   AnimatePresence,
   motion,
   useMotionValue,
-  useMotionValueEvent,
-  useScroll,
   useSpring,
   useTransform,
 } from "framer-motion";
@@ -205,30 +203,29 @@ function MagneticDock({ pathname }: { pathname: string | null }) {
 }
 
 export function Navbar() {
-  const { scrollY } = useScroll();
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrolled(latest > 12);
-  });
 
   return (
     <motion.header
       className="pointer-events-none fixed inset-x-0 top-0 z-50"
       initial={false}
     >
-      <div className="relative mx-auto flex h-[5.5rem] max-w-7xl items-center justify-between gap-3 px-6 md:grid md:h-24 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-4 md:px-12">
+      <div className="relative mx-auto flex h-24 max-w-7xl items-center justify-between gap-3 px-6 pt-3 md:grid md:h-28 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-4 md:px-12 md:pt-4">
         <div className="min-w-0 pr-2 md:pr-4">
           <motion.div
-            className={[
-              "pointer-events-auto rounded-lg px-2 py-1 transition-[background-color,backdrop-filter,border-color] duration-300",
-              scrolled
-                ? "border border-border bg-background/80 backdrop-blur-md"
-                : "border border-transparent",
-              "md:border-transparent md:bg-transparent md:backdrop-blur-none",
-            ].join(" ")}
+            className="pointer-events-auto inline-flex items-center rounded-2xl px-4 py-2 md:px-5 md:py-2.5"
+            style={{
+              background: "rgba(11, 13, 20, 0.55)",
+              backdropFilter: "blur(22px) saturate(170%)",
+              WebkitBackdropFilter: "blur(22px) saturate(170%)",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              boxShadow:
+                "0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+            }}
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
           >
             <Link href="/" className="group block max-w-full">
               <Image
@@ -237,8 +234,8 @@ export function Navbar() {
                 width={980}
                 height={205}
                 priority
-                sizes="(max-width: 768px) 78vw, min(520px, 34vw)"
-                className="h-16 w-auto max-w-full object-contain object-left transition-opacity duration-300 group-hover:opacity-90 md:h-20"
+                sizes="(max-width: 768px) 80vw, min(560px, 38vw)"
+                className="h-14 w-auto max-w-full object-contain object-left transition-opacity duration-300 group-hover:opacity-90 md:h-20"
               />
             </Link>
           </motion.div>
@@ -251,7 +248,15 @@ export function Navbar() {
         <div className="flex shrink-0 items-center justify-end md:min-w-0">
           <button
             type="button"
-            className="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-md border border-border text-textPrimary md:hidden"
+            className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-2xl text-textPrimary md:hidden"
+            style={{
+              background: "rgba(11, 13, 20, 0.55)",
+              backdropFilter: "blur(22px) saturate(170%)",
+              WebkitBackdropFilter: "blur(22px) saturate(170%)",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              boxShadow:
+                "0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+            }}
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
             aria-label={menuOpen ? "Close menu" : "Open menu"}

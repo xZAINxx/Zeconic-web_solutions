@@ -21,14 +21,14 @@ export const projects: Project[] = [
     screenshotPath: "/screenshots/atifsolutions.png",
   },
   {
-    id: "whjitti",
-    name: "Whjitti",
-    url: "https://whjitti.com",
-    displayUrl: "whjitti.com",
+    id: "zahelle",
+    name: "Zahelle",
+    url: "https://zahelle.com",
+    displayUrl: "zahelle.com",
     description:
-      "Modern web presence built for performance and clarity. Mobile-first design optimized for lead generation.",
-    tags: ["Business website", "Next.js", "Mobile-first"],
-    screenshotPath: "/screenshots/whjitti.png",
+      "Editorial brand site for a luxury textile collection. Bilingual EN/FR, magazine-grade typography, and a quiet visual rhythm built to make a premium product feel premium.",
+    tags: ["Brand site", "Bilingual", "Editorial"],
+    screenshotPath: "/screenshots/zahelle.png",
   },
   {
     id: "walicont",
@@ -39,6 +39,16 @@ export const projects: Project[] = [
       "Clean, professional site designed to establish credibility and drive client inquiries for a growing business.",
     tags: ["Business website", "React", "SEO-optimized"],
     screenshotPath: "/screenshots/walicont.png",
+  },
+  {
+    id: "whjitti",
+    name: "Whjitti",
+    url: "https://whjitti.com",
+    displayUrl: "whjitti.com",
+    description:
+      "Modern web presence built for performance and clarity. Mobile-first design optimized for lead generation.",
+    tags: ["Business website", "Next.js", "Mobile-first"],
+    screenshotPath: "/screenshots/whjitti.png",
   },
   {
     id: "coming-soon",
