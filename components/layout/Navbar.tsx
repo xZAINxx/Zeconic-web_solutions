@@ -4,8 +4,6 @@ import {
   AnimatePresence,
   motion,
   useMotionValue,
-  useMotionValueEvent,
-  useScroll,
   useSpring,
   useTransform,
 } from "framer-motion";
@@ -205,14 +203,8 @@ function MagneticDock({ pathname }: { pathname: string | null }) {
 }
 
 export function Navbar() {
-  const { scrollY } = useScroll();
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrolled(latest > 12);
-  });
 
   return (
     <motion.header
