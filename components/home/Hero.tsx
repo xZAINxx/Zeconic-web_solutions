@@ -15,7 +15,7 @@ const CyberGlobe = dynamic(() => import("@/components/3d/CyberGlobe"), {
 });
 
 const stats = [
-  { value: "4+", label: "Sites shipped" },
+  { value: "40+", label: "Sites shipped" },
   { value: "100%", label: "US-built" },
   { value: "<2wk", label: "Avg launch" },
   { value: "AI", label: "Native" },

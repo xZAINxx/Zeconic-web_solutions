@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 
 const numbers = [
-  { value: "4+", label: "Live sites in production" },
-  { value: "<2s", label: "Average load time" },
+  { value: "40+", label: "Websites shipped" },
+  { value: "<2wk", label: "Avg launch" },
   { value: "100%", label: "Mobile responsive" },
   { value: "24/7", label: "AI handles inquiries" },
 ];

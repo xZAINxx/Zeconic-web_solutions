@@ -251,10 +251,10 @@ export default function ContactForm() {
                   Phone
                 </p>
                 <a
-                  href="tel:+19253342667"
+                  href="tel:+13475258073"
                   className="mt-1 block text-[14.5px] text-primary transition-colors hover:text-textPrimary"
                 >
-                  +1 (925) 334-2667
+                  +1 (347) 525-8073
                 </a>
               </div>
               <div>
