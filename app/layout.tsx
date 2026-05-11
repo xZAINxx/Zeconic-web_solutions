@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Chatbase } from "@/components/chat/Chatbase";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import PageTransition from "@/components/ui/PageTransition";
@@ -51,6 +52,7 @@ export default function RootLayout({
           <PageTransition>{children}</PageTransition>
         </main>
         <Footer />
+        <Chatbase />
       </body>
     </html>
   );
